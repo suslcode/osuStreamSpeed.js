@@ -129,6 +129,7 @@ $(document).keypress(function(event)
         //{
             if ((String.fromCharCode(event.which) == key1) || (String.fromCharCode(event.which) == key2)) // Any reason there are two of these? Removed one...
             {
+				console.log(event.which)
                 switch (beginTime)
                 {
                     case -1:

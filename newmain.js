@@ -36,6 +36,9 @@ var baseData = {
 	
 function beginTest() {
     testrunning = true;
+	$("#key-container").html("");
+	$("#mistakes").html("");
+
     clickLimit = Math.round(parseInt(document.getElementById('clickNum').value));
 	timeLimit = Math.round(parseInt(document.getElementById('clickTime').value));
 	if (timeLimit < 2)
@@ -169,6 +172,13 @@ function update(click) {
 	}
     }
 }
+var lastKeyPressed = null;
+var mistakes = 0;
+var alreadyPressed = false;
+
+var sound = new Audio('combobreak.wav');
+sound.preload = 'auto';
+sound.load();
 
 $(document).keypress(function(event)
 {
@@ -180,6 +190,27 @@ $(document).keypress(function(event)
         //{
             if ((String.fromCharCode(event.which) == key1) || (String.fromCharCode(event.which) == key2)) // Any reason there are two of these? Removed one...
             {
+				var keypressed = String.fromCharCode(event.which);
+				if (keypressed == lastKeyPressed)
+				{
+					if(alreadyPressed){
+						alreadyPressed = false;
+					}
+					else {
+						alreadyPressed = true;
+						mistakes++;
+						$("#mistakes").html(mistakes)
+						sound.play()
+						
+					}
+				}
+				else{
+					alreadyPressed = false;
+				}
+				lastKeyPressed = keypressed;
+
+				$("#key-container").append(`<span>${keypressed}</span>`);
+
                 switch (beginTime)
                 {
                     case -1:
@@ -205,6 +236,8 @@ $(document).keypress(function(event)
         //}
     }
 });
+
+
 
 $(document).mousedown(function(event)
 {
