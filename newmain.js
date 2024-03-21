@@ -38,6 +38,7 @@ function beginTest() {
     testrunning = true;
 	$("#key-container").html("");
 	$("#mistakes").html("");
+	mistakes = 0;
 
     clickLimit = Math.round(parseInt(document.getElementById('clickNum').value));
 	timeLimit = Math.round(parseInt(document.getElementById('clickTime').value));
@@ -190,7 +191,10 @@ $(document).keypress(function(event)
         //{
             if ((String.fromCharCode(event.which) == key1) || (String.fromCharCode(event.which) == key2)) // Any reason there are two of these? Removed one...
             {
+				var kc = $("#key-container");
 				var keypressed = String.fromCharCode(event.which);
+				kc.append(`<span>${keypressed}</span>`);
+
 				if (keypressed == lastKeyPressed)
 				{
 					if(alreadyPressed){
@@ -201,7 +205,9 @@ $(document).keypress(function(event)
 						mistakes++;
 						$("#mistakes").html(mistakes)
 						sound.play()
-						
+						var kcChildren = kc.children()
+						kcChildren.eq(-1).css("color", "red");
+						kcChildren.eq(-2).css("color", "red");
 					}
 				}
 				else{
@@ -209,7 +215,6 @@ $(document).keypress(function(event)
 				}
 				lastKeyPressed = keypressed;
 
-				$("#key-container").append(`<span>${keypressed}</span>`);
 
                 switch (beginTime)
                 {
